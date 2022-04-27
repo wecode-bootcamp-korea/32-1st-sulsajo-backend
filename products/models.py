@@ -1,5 +1,6 @@
 from django.db    import models
 from users.models import User
+from core.models  import TimeStampModel
 
 class Product(models.Model):
     size               = models.IntegerField()
@@ -31,11 +32,9 @@ class CategoryImage(models.Model):
     class Meta:
         db_table = 'category_images'
 
-class Comment(models.Model):
-    user       = models.ForeignKey(User, on_delete=models.CASCADE)
-    product    = models.ForeignKey(Product, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+class Comment(TimeStampModel):
+    user    = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'comments'
@@ -63,11 +62,9 @@ class FingerFoodImage(models.Model):
     class Meta:
         db_table = 'finger_food_images'
 
-class Cart(models.Model):
-    user       = models.ForeignKey(User, on_delete=models.CASCADE)
-    product    = models.ForeignKey(Product, on_delete=models.CASCADE, blank=True)
-    timestamp  = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now= True)
+class Cart(TimeStampModel):
+    user    = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, blank=True)
 
     class Meta:
         db_table = 'carts'
