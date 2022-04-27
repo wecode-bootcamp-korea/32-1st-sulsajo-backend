@@ -2,11 +2,11 @@ from django.db    import models
 from users.models import User
 
 class Product(models.Model):
-    size           = models.IntegerField()
-    description    = models.CharField(max_length=1000)
-    price          = models.DecimalField(max_digits=8, decimal_places=2)
-    category       = models.ForeignKey('Category', on_delete=models.CASCADE)
-    alcohol_degree = models.ForeignKey('AlcoholDegree', on_delete=models.CASCADE)
+    size               = models.IntegerField()
+    description        = models.CharField(max_length=1000)
+    price              = models.DecimalField(max_digits=8, decimal_places=2)
+    category           = models.ForeignKey('Category', on_delete=models.CASCADE)
+    alcohol_percentage = models.DecimalField(max_digits=3, decimal_places=1)
 
     class Meta:
         db_table = 'products'
@@ -41,7 +41,10 @@ class Comment(models.Model):
         db_table = 'comments'
 
 class AlcoholDegree(models.Model):
-    percent = models.IntegerField()
+    lowest  = models.CharField(max_length=100)
+    lower   = models.CharField(max_length=100)
+    higher  = models.CharField(max_length=100)
+    highest = models.CharField(max_length=100)
 
     class Meta:
         db_table = 'alcohol_degrees'
