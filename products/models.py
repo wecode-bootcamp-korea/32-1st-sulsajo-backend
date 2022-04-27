@@ -61,10 +61,10 @@ class FingerFoodImage(models.Model):
         db_table = 'finger_food_images'
 
 class Cart(models.Model):
-    user      = models.ForeignKey(User, on_delete=models.CASCADE)
-    product   = models.ForeignKey(Product, on_delete=models.CASCADE, blank=True)
-    timestamp = models.DateTimeField(auto_now_add=True)
-    updated   = models.DateTimeField(auto_now= True)
+    user       = models.ForeignKey(User, on_delete=models.CASCADE)
+    product    = models.ForeignKey(Product, on_delete=models.CASCADE, blank=True)
+    timestamp  = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now= True)
 
     class Meta:
         db_table = 'carts'
