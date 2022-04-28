@@ -4,7 +4,9 @@ from core.models  import TimeStampModel
 
 class Product(models.Model):
     size               = models.IntegerField()
-    description        = models.CharField(max_length=1000)
+    name               = models.CharField(max_length=100)
+    description_detail = models.CharField(max_length=1000)
+    description_tag    = models.CharField(max_length=1000)
     price              = models.DecimalField(max_digits=8, decimal_places=2)
     category           = models.ForeignKey('Category', on_delete=models.CASCADE)
     alcohol_percentage = models.DecimalField(max_digits=3, decimal_places=1)
