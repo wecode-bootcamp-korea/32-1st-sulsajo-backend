@@ -71,6 +71,7 @@ class Cart(TimeStampModel):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, blank=True)
     count   = models.IntegerField()
     price   = models.DecimalField(max_digits=8, decimal_places=2)
+    checked = models.BooleanField(default=True)
 
     class Meta:
         db_table = 'carts'
