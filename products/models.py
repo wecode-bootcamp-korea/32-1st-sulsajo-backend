@@ -66,12 +66,13 @@ class FingerFoodImage(models.Model):
     class Meta:
         db_table = 'finger_food_images'
 
-class Cart(TimeStampModel):
-    user    = models.ForeignKey(User, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, blank=True)
-    count   = models.IntegerField()
-    price   = models.DecimalField(max_digits=8, decimal_places=2)
-    checked = models.BooleanField(default=True)
+class OrderItem(TimeStampModel):
+    user       = models.ForeignKey(User, on_delete=models.CASCADE)
+    product    = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
+    count      = models.PositiveIntegerField()
+    price      = models.DecimalField(max_digits=8, decimal_places=2)
+    is_checked = models.BooleanField(default=True)
+    order      = models.ForeignKey("Order", on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'carts'
