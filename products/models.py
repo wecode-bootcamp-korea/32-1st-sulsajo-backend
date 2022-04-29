@@ -90,3 +90,13 @@ class OrderStatus(models.Model):
 
     class Meta:
         db_table = "order_status"
+
+class Taste(models.Model):
+    spiceness       = models.IntegerField()
+    savory          = models.IntegerField()
+    refreshnes      = models.IntegerField()
+    taste_intensity = models.IntegerField()
+    category        = models.ForeignKey(Category, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = "taste"
