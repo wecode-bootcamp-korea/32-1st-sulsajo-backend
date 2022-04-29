@@ -75,7 +75,7 @@ class OrderItem(TimeStampModel):
     order      = models.ForeignKey("Order", on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'carts'
+        db_table = 'orderitems'
 
 class Order(TimeStampModel):
     user         = models.ForeignKey(User, on_delete=models.CASCADE)
