@@ -99,4 +99,4 @@ class Taste(models.Model):
     category        = models.ForeignKey(Category, on_delete=models.CASCADE)
 
     class Meta:
-        db_table = "taste"
+        db_table = "tastes"
