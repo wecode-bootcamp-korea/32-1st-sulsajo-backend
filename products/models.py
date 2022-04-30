@@ -44,10 +44,7 @@ class Comment(TimeStampModel):
         db_table = 'comments'
 
 class AlcoholType(models.Model):
-    lowest  = models.CharField(max_length=100)
-    lower   = models.CharField(max_length=100)
-    higher  = models.CharField(max_length=100)
-    highest = models.CharField(max_length=100)
+    type  = models.CharField(max_length=100)
 
     class Meta:
         db_table = 'alcohol_types'
@@ -94,8 +91,9 @@ class OrderStatus(models.Model):
 class Taste(models.Model):
     spiceness       = models.IntegerField()
     savory          = models.IntegerField()
-    refreshnes      = models.IntegerField()
+    refreshness     = models.IntegerField()
     taste_intensity = models.IntegerField()
+    sweetness       = models.IntegerField()
     category        = models.ForeignKey(Category, on_delete=models.CASCADE)
 
     class Meta:
