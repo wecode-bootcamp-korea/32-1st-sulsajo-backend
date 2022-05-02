@@ -1,33 +1,34 @@
 
 import json, re, random
+from unicodedata      import name
 
 from django.shortcuts import render
-
 from django.views     import View
 from django.http      import JsonResponse
-from random           import randint
+from django.db.models import Q
 
-from products.models  import Product, ProductImage, Category, CategoryImage, Comment, AlcoholType, FingerFood, FingerFoodImage, OrderItem, Taste
+from random           import randint
+from products.models  import Product, ProductImage, Category, CategoryImage
 
 class ProductListView(View):
     def get(self, request):
         try:
-            category       = request.GET.get('category', None)
-            category_image = CategoryImage.objects.all()
-            category_list  = [{
-                'category_image' : category_image.image_url,
-                'category'       : category.name
-            }]
+            category  = request.GET.get('category', None)
+            searching = request.GET.get('name', None)
 
-            products_image  = ProductImage.objects.all()
-            products        = Product.objects.all()
-            searching       = request.GET.get('name', None)
-            products        = Product.objects.filter(name__icontains=searching) if searching else products
-            random_product  = Product.objects.values_list('pk', flat=True)
-            random_product  = Product.objects.filter(id__in=random.sample(random_product, 12))
-            random_category = Product.objects.filter(category_id__icontains=random_product)
+            category       = Category.objects.get(id=1)
+            category_image = CategoryImage.objects.get(id=1)
+
+            products       = Product.objects.get(id=1)
+            products       = Product.objects.filter(name__icontains=searching) if searching else products
+            products_image = ProductImage.objects.get(id=1)
+            product_random = random.choice(list(products.items()))
+            product_random = json.dumps(product_random)
+            product_random = Product.objects.filter(Q(category_id=category)) if category else products
 
             product_list = [{
+                'category_image'  : category_image.image_url,
+                'category'        : category,
                 'product_image'   : products_image.image_url,
                 'name'            : products.name,
                 'price'           : products.price,
@@ -36,6 +37,4 @@ class ProductListView(View):
 
         except ValueError:
             return JsonResponse({'message':'VALUE_ERROR'}, status = 400)
-        return JsonResponse({
-            'message': 'SUCCESS', 'category_list': category_list,'product_list' : product_list}, status = 200
-            )
+        return JsonResponse({'message': 'SUCCESS', 'product_list' : product_list}, status = 200)
