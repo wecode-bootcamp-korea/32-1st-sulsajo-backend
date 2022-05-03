@@ -50,18 +50,12 @@ class AlcoholType(models.Model):
         db_table = 'alcohol_types'
 
 class FingerFood(models.Model):
-    name     = models.CharField(max_length=100)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    name      = models.CharField(max_length=100)
+    category  = models.ForeignKey(Category, on_delete=models.CASCADE)
+    image_url = models.URLField(max_length=2000)
 
     class Meta:
         db_table = 'finger_foods'
-
-class FingerFoodImage(models.Model):
-    image_url   = models.URLField(max_length=2000)
-    finger_food = models.ForeignKey(FingerFood, on_delete=models.CASCADE)
-
-    class Meta:
-        db_table = 'finger_food_images'
 
 class OrderItem(TimeStampModel):
     user       = models.ForeignKey(User, on_delete=models.CASCADE)
