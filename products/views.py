@@ -1,40 +1,40 @@
-
-import json, re, random
-from unicodedata      import name
+import json
 
 from django.shortcuts import render
 from django.views     import View
 from django.http      import JsonResponse
 from django.db.models import Q
 
-from random           import randint
-from products.models  import Product, ProductImage, Category, CategoryImage
+from products.models  import Product
 
 class ProductListView(View):
     def get(self, request):
         try:
-            category  = request.GET.get('category', None)
-            searching = request.GET.get('name', None)
+            category_id = request.GET.get('categoryId', None)
+            searching   = request.GET.get('productName', None)
+            offset      = request.GET.get('offset', 0)
+            limit       = request.GET.get('limit', 30)
 
-            category       = Category.objects.get(id=1)
-            category_image = CategoryImage.objects.get(id=1)
+            filter_condition = Q()
 
-            products       = Product.objects.get(id=1)
-            products       = Product.objects.filter(name__icontains=searching) if searching else products
-            products_image = ProductImage.objects.get(id=1)
-            product_random = random.choice(list(products.items()))
-            product_random = json.dumps(product_random)
-            product_random = Product.objects.filter(Q(category_id=category)) if category else products
+            if category_id:
+                filter_condition &= Q(category_id=category_id)
+
+            if searching:
+                filter_condition &= Q(name__icontains=searching)
+
+            products = Product.objects.filter(filter_condition).order_by('?')[offset:offset+limit]
 
             product_list = [{
-                'category_image'  : category_image.image_url,
-                'category'        : category,
-                'product_image'   : products_image.image_url,
-                'name'            : products.name,
-                'price'           : products.price,
-                'description_tag' : products.description_tag
-            }]
+                'category_id'     : product.category.id,
+                'product_id'      : product.id,
+                'name'            : product.name,
+                'price'           : product.price,
+                'description_tag' : product.description_tag,
+                'products_image'  : product.productimage_set.first().image_url,
+            } for product in products]
+
+            return JsonResponse({'product_list' : product_list}, status = 200)
 
         except ValueError:
             return JsonResponse({'message':'VALUE_ERROR'}, status = 400)
-        return JsonResponse({'message': 'SUCCESS', 'product_list' : product_list}, status = 200)

@@ -6,17 +6,16 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "sulsajo.settings")
 django.setup()
 
 from users.models import User
-from products.models import Product, Category, ProductImage, CategoryImage, Comment, AlcoholType, FingerFood, FingerFoodImage, OrderItem, Taste
+from products.models import Product, Category, ProductImage, CategoryImage, Comment, AlcoholType, FingerFood, OrderItem, Taste
 
 
 CSV_PATH_CATEGORIES = 'categories.csv'
 CSV_PATH_TASTES = 'tastes.csv'
 CSV_PATH_CATEGORY_IMAGES = 'category_images.csv'
 CSV_PATH_FINGER_FOODS = 'finger_foods.csv'
-CSV_PATH_FINGER_FOODS_IMGAES = 'finger_foods_images.csv'
 CSV_PATH_ALCOHOL_TYPES = 'alcohol_types.csv'
 CSV_PATH_PRODUCTS = 'products.csv'
-CSV_PATH_PRODUCT_IMAGES = 'product_images.csv'
+CSV_PATH_PRODUCTS_IMAGES = 'product_images.csv'
 CSV_PATH_USERS = 'users.csv'
 CSV_PATH_COMMENTS = 'comments.csv'
 CSV_PATH_ORDERITEMS = 'orderitems.csv'
@@ -57,7 +56,7 @@ CSV_PATH_ORDERITEMS = 'orderitems.csv'
 #             category_id     = category_id
 #         )
 
-# # def insert_category_images():
+# def insert_category_images():
 # with open(CSV_PATH_CATEGORY_IMAGES) as in_file:
 #     data_reader = csv.reader(in_file)
 #     next(data_reader, None)
@@ -67,7 +66,7 @@ CSV_PATH_ORDERITEMS = 'orderitems.csv'
 #         category_id = row[2]
 
 #         CategoryImage.objects.create(
-#             pk          = id,
+#             id          = id,
 #             image_url   = image_url,
 #             category_id = category_id
 #         )
@@ -79,27 +78,14 @@ CSV_PATH_ORDERITEMS = 'orderitems.csv'
 #     for row in data_reader:
 #         id          = row[0]
 #         name        = row[1]
-#         category_id = row[2]
+#         image_url   = row[2]
+#         category_id = row[3]
 
 #         FingerFood.objects.create(
 #             pk          = id,
 #             name        = name,
+#             image_url   = image_url,
 #             category_id = category_id
-#         )
-
-# # def insert_finger_foods_images():
-# with open(CSV_PATH_FINGER_FOODS_IMGAES) as in_file:
-#     data_reader = csv.reader(in_file)
-#     next(data_reader, None)
-#     for row in data_reader:
-#         id             = row[0]
-#         image_url      = row[1]
-#         finger_food_id = row[2]
-
-#         FingerFoodImage.objects.create(
-#             pk             = id,
-#             image_url      = image_url,
-#             finger_food_id = finger_food_id
 #         )
 
 # # def insert_alcohol_types():
@@ -115,7 +101,7 @@ CSV_PATH_ORDERITEMS = 'orderitems.csv'
 #             type = type,
 #             )
 
-# # def insert_products():
+# def insert_products():
 # with open(CSV_PATH_PRODUCTS) as in_file:
 #     data_reader = csv.reader(in_file)
 #     next(data_reader, None)
@@ -143,7 +129,7 @@ CSV_PATH_ORDERITEMS = 'orderitems.csv'
 #         )
 
 # # def insert_products_images():
-# with open(CSV_PATH_PRODUCT_IMAGES) as in_file:
+# with open(CSV_PATH_PRODUCTS_IMAGES) as in_file:
 #     data_reader = csv.reader(in_file)
 #     next(data_reader, None)
 #     for row in data_reader:
@@ -215,6 +201,7 @@ CSV_PATH_ORDERITEMS = 'orderitems.csv'
 #         order_id   = row[6]
 #         product_id = row[7]
 #         user_id    = row[8]
+        
 #         OrderItem.objects.create(
 #             pk         = id,
 #             created_at = created_at,
