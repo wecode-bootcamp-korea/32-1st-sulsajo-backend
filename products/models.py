@@ -50,8 +50,8 @@ class AlcoholType(models.Model):
         db_table = 'alcohol_types'
 
 class FingerFood(models.Model):
-    name      = models.CharField(max_length=100)
-    category  = models.ForeignKey(Category, on_delete=models.CASCADE)
+    name     = models.CharField(max_length=100)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     image_url = models.URLField(max_length=2000)
 
     class Meta:
