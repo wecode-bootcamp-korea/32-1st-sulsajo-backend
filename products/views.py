@@ -9,7 +9,6 @@ from django.db.models import Q
 
 from products.models  import Product, ProductImage, Category, CategoryImage, Comment, AlcoholType, FingerFood, OrderItem, Taste
 from users.models     import User
-
 from users.decorator  import log_in_decorator
 
 class ProductView(View):
