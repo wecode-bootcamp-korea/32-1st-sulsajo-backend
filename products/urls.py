@@ -1,9 +1,10 @@
 from django.urls import path
-from products.views import ProductView, CommentView, SubscribeView, ProductListView
+from products.views import ProductDetailView, CommentView, SubscribeView, ProductListView
 
 urlpatterns = [
-    path('/product/<int:product_id>', ProductView.as_view()),
-    path('/product/<int:product_id>/comment', CommentView.as_view()),
-    path('/subscribe/<int:product_id>', SubscribeView.as_view()),
+    path('/<int:product_id>', ProductDetailView.as_view()),
+    path('/<int:product_id>/comment', CommentView.as_view()),
+    path('/<int:product_id>/comment/<int:comment_id>', CommentView.as_view()),
+    path('/<int:product_id>/subscribe', SubscribeView.as_view()),
     path('/list', ProductListView.as_view())
     ]
