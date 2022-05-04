@@ -1,13 +1,18 @@
 import json, re
 
+from json.decoder     import JSONDecodeError
+
 from django.shortcuts import render
 
 from django.views     import View
 from django.http      import JsonResponse, HttpResponse
 
 from products.models  import Product, ProductImage, Category, CategoryImage, Comment, AlcoholType, FingerFood, OrderItem, Taste
+from users.models     import User
+
 from users.decorator  import log_in_decorator
-from json.decoder     import JSONDecodeError
+
+
 
 class ProductView(View):
     def get(self, request, product_id):
@@ -52,19 +57,20 @@ class ProductView(View):
 
 class CommentView(View):
     @log_in_decorator
-    def post(self, request):
+    def post(self, request, product_id):
         try:
             data         = json.loads(request.body)
             user         = request.user
             content      = data.get('content', None)
-            product_name = data.get('product_name', None)
-            created_at   = data.get('created_at', None)
+            product_id   = data.get('product_id', None)
+
+            if not Product.objects.filter(id=product_id).exists():
+                return JsonResponse({'message': 'PRODUCT_DOES_NOT_EXIST'}, status=404)
             
             Comment.objects.create(
-                content      = content,
-                user         = user,
-                product_name = product_name,
-                created_at   = created_at
+                content    = content,
+                user       = user,
+                product_id = product_id
                 )
 
             return JsonResponse({'message':'SUCCESS'}, status=201)
@@ -72,7 +78,19 @@ class CommentView(View):
         except JSONDecodeError:
             return JsonResponse({'message':'JSON_DECODE_ERROR'}, status=400)
 
-     
+    def get(self, request, product_id):
+        if not Product.objects.filter(id=product_id).exists():
+            return JsonResponse({'message':'COMMENT_DOES_NOT_EXIST'}, status=404)
+
+        comment_list = [{
+            "username"  : User.objects.get(id=comment.user.id).username,
+            "content"   : comment.content,
+            "create_at" : comment.created_at
+            } for comment in Comment.objects.filter(product_id=product_id)
+        ]
+
+        return JsonResponse({'data':comment_list}, status=200)
+
     @log_in_decorator
     def delete(self, request, comment_id):
         user = request.user
@@ -118,4 +136,3 @@ class SubscribeView(View):
             'subscribe_detail': subscribe_detail
             },
             status = 200)
-
