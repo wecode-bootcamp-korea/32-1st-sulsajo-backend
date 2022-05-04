@@ -388,13 +388,4 @@ my_settings.py
 
 db_uploader.py
 
-alcohol_types.csv
-categories.csv
-category_images.csv
-comments.csv
-finger_foods.csv
-orderitems.csv
-product_images.csv
-products.csv
-tastes.csv
-users.csv
+*.csv

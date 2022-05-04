@@ -9,7 +9,7 @@ from products.models  import Product, ProductImage, Category, CategoryImage, Com
 from users.decorator  import log_in_decorator
 from json.decoder     import JSONDecodeError
 
-class DetailProductView(View):
+class ProductView(View):
     def get(self, request, product_id):
         try:
             products = Product.objects.filter(id = product_id)
@@ -40,17 +40,17 @@ class DetailProductView(View):
                     'name'      : finger_food.name,
                     'image_url' : finger_food.image_url
                     } for finger_food in product.category.fingerfood_set.all()]
-                    } for product in products]
+            } for product in products]
 
         except Product.DoesNotExist:
             return JsonResponse({'message':'VALUE_ERROR'}, status = 404)
         return JsonResponse({
-            "message" : "상세페이지 제품 관련 데이터",
+            "message" : "product_detail",
             "product_detail": product_detail
             },
             status = 200)
 
-class DetailCommentView(View):
+class CommentView(View):
     @log_in_decorator
     def post(self, request):
         try:
@@ -67,12 +67,12 @@ class DetailCommentView(View):
                 created_at   = created_at
                 )
 
-            return JsonResponse({'message':'SUCCESS'}, status=200)
+            return JsonResponse({'message':'SUCCESS'}, status=201)
 
         except JSONDecodeError:
             return JsonResponse({'message':'JSON_DECODE_ERROR'}, status=400)
 
-class DetailCommentDeleteView(View):
+     
     @log_in_decorator
     def delete(self, request, comment_id):
         user = request.user
@@ -86,7 +86,7 @@ class DetailCommentDeleteView(View):
             return JsonResponse({'message':'INVALID_USER'}, status=401)
 
         Comment.objects.filter(id=comment.id).delete()
-        return JsonResponse({'message': 'SUCCESS'}, status=200)
+        return JsonResponse({'message': 'SUCCESS'}, status=204)
 
 class SubscribeView(View):
     def get(self, request, product_id):
@@ -112,39 +112,10 @@ class SubscribeView(View):
             })for product in products]
 
         except Product.DoesNotExist:
-            return JsonResponse({'message':'VALUE_ERROR'}, status = 404)
+            return JsonResponse({'message':'PRODUCT_DOES_NOT_EXIST'}, status = 404)
         return JsonResponse({
-            "message" : '구독페이지 제품 관련 데이터',
+            "message" : 'Subscribe_detail',
             'subscribe_detail': subscribe_detail
             },
             status = 200)
 
-class ProductListView(View):
-    def get(self, request):
-        try:
-            category       = request.GET.get('category', None)
-            category_image = CategoryImage.objects.get(id=1)
-            category_list  = [{
-                'category_image' : category_image.image_url,
-                'category'       : Product.category_set.name
-            }]
-
-            products_image   = ProductImage.objects.all()
-            products         = Product.objects.all()
-            searching        = request.GET.get('name', None)
-            products         = Product.objects.filter(name__icontains=searching) if searching else products
-            product_random   = Product.objects.order_by('?')[:12]
-            product_random   = Product.objects.filter(category_id__icontains=product_random)
-
-            product_list = [{
-                'product_image'   : products_image.image_url,
-                'name'            : products.name,
-                'price'           : products.price,
-                'description_tag' : products.description_tag
-            }]
-
-        except ValueError:
-            return JsonResponse({'message':'VALUE_ERROR'}, status = 400)
-        return JsonResponse({
-            'message': 'SUCCESS', 'category_list': category_list,'product_list' : product_list}, status = 200
-            )
