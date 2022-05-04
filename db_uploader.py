@@ -56,7 +56,7 @@ CSV_PATH_ORDERITEMS = 'orderitems.csv'
 #             category_id     = category_id
 #         )
 
-# def insert_category_images():
+# #def insert_category_images():
 # with open(CSV_PATH_CATEGORY_IMAGES) as in_file:
 #     data_reader = csv.reader(in_file)
 #     next(data_reader, None)
