@@ -1,5 +1,5 @@
-from django.db import models
-from core.models  import TimeStampModel
+from django.db   import models
+from core.models import TimeStampModel
 
 class User(TimeStampModel):
     email      = models.CharField(max_length=100, unique=True)
